@@ -16,6 +16,7 @@ let userSchema = mongoose.Schema({
   github: String,
   linkedin: String,
   google: String,
+  facebook: String,
   createdAt: {type: Date, default: Date.now, required: true}
 });
 
