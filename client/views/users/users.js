@@ -1,8 +1,12 @@
 'use strict';
 
 angular.module('angular-prototype')
-  .controller('UsersCtrl', ['$rootScope', '$scope', '$state', 'User', function($rootScope, $scope, $state, User){
+  .controller('UsersCtrl', ['$rootScope', '$scope', '$state', '$auth', 'User', function($rootScope, $scope, $state, $auth, User){
     $scope.name = _.capitalize($state.current.name);
+
+    $scope.authenticate = function(provider) {
+      $auth.authenticate(provider);
+    };
 
     $scope.submit = function(user){
       if($scope.name === 'Register'){
