@@ -25,14 +25,15 @@
   "scripts": {
     "start": "node server/index.js",
     "localhost": "MONGO_URL=mongodb://localhost/letsgobro-prod PORT=3333 nodemon -e js,jade server/index.js",
+    "clean": "rm -rf node_modules && rm -rf public && npm install && bower install && gulp build",
     "preinstall": "rm -rf node_modules public",
     "postinstall": "bower install && gulp build",
-    "test": "MONGO_URL=mongodb://localhost/letsgobro-test lab -l -v -m 5000 test/unit test/acceptance"
+    "test": "MONGO_URL=mongodb://localhost/letsgobro-test lab -l -v -m 5000 test/unit"
   },
   "license": "MIT",
   "dependencies": {
     "async": "^0.9.0",
-    "babel": "^4.7.4",
+    "babel": "^4.7.8",
     "bcrypt": "^0.8.1",
     "good": "^5.1.2",
     "good-console": "^4.1.0",
@@ -59,6 +60,6 @@
     "gulp-sourcemaps": "^1.5.0",
     "gulp-watch": "^4.1.1",
     "jshint-stylish": "^1.0.1",
-    "lab": "^5.4.0"
+    "lab": "^5.5.0"
   }
 }

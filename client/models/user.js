@@ -15,9 +15,5 @@ angular.module('angular-prototype')
       return $http.get('/status');
     }
 
-    function logout(){
-      return $http.delete('/logout');
-    }
-
-    return {register:register, login:login, status:status, logout:logout};
+    return {register:register, login:login, status:status};
   }]);

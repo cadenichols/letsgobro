@@ -16,8 +16,8 @@ module.exports = {
       if(err){
         reply().code(400);
       }else{
-        request.auth.session.set(user);
-        reply({email:user.email});
+        let token = user.token();
+        reply({token:token, user:user});
       }
     });
   }

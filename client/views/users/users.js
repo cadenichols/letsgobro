@@ -1,31 +1,31 @@
 'use strict';
 
 angular.module('angular-prototype')
-  .controller('UsersCtrl', ['$rootScope', '$scope', '$state', '$auth', 'User', function($rootScope, $scope, $state, $auth, User){
+  .controller('UsersCtrl', ['$rootScope', '$scope', '$state', '$auth', '$window', function($rootScope, $scope, $state, $auth, $window){
     $scope.name = _.capitalize($state.current.name);
 
+    function login (response) {
+      $rootScope.user = response.data.user;
+      $window.localStorage.user = JSON.stringify(response.data.user);
+      $state.go('home');
+    }
+
     $scope.authenticate = function(provider) {
-      $auth.authenticate(provider);
+      $auth.authenticate(provider)
+      .then(login);
     };
 
     $scope.submit = function(user){
       if($scope.name === 'Register'){
         if((user.password1 === user.password2) && (user.email)){
-          User.register({email:user.email, password:user.password1}).then(function(){
-            $state.go('login');
-          }, function(){
-            user.email = user.password1 = user.password2 = '';
-          });
+          $auth.signup({email:user.email, password:user.password1})
+          .then(login);
         }else{
           user.password1 = user.password2 = '';
         }
       }else{
-        User.login(user).then(function(response){
-          $rootScope.email = response.data.email;
-          $state.go('home');
-        }, function(){
-          user.email = user.password = '';
-        });
+        $auth.login({email:user.email, password:user.password})
+        .then(login);
       }
     };
   }]);

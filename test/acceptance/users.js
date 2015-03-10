@@ -2,6 +2,8 @@
 
 'use strict';
 
+require('babel/register');
+
 var expect = require('chai').expect;
 var Lab = require('lab');
 var lab = exports.lab = Lab.script();
