@@ -15,8 +15,27 @@ let userSchema = mongoose.Schema({
   photoUrl: String,
   github: String,
   linkedin: String,
+  google: String,
   createdAt: {type: Date, default: Date.now, required: true}
 });
+
+userSchema.statics.facebook = function(payload, cb) {
+  let accessTokenUrl = 'https://graph.facebook.com/oauth/access_token';
+  let graphApiUrl = 'https://graph.facebook.com/me';
+  let params = {
+    code: payload.code,
+    client_id: payload.clientId,
+    redirect_uri: payload.redirectUri,
+    client_secret: process.env.FACEBOOK_SECRET
+  };
+  Request.get({url: accessTokenUrl, qs: params, json: true}, (err, response, accessToken) => {
+    accessToken = qs.parse(accessToken);
+    Request.get({url: graphApiUrl, qs:accessToken, json:true}, (err, response, profile) => {
+      let photoUrl = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
+      cb({facebook:profile.id, displayName:profile.name, photoUrl:photoUrl});      
+    });
+  });
+};
 
 userSchema.statics.github = function(payload, cb) {
   let accessTokenUrl = 'https://github.com/login/oauth/access_token';
@@ -37,10 +56,28 @@ userSchema.statics.github = function(payload, cb) {
   });
 };
 
+userSchema.statics.google = function(payload, cb) {
+  let accessTokenUrl = 'https://accounts.google.com/o/oauth2/token';
+  let userApiUrl = 'https://www.googleapis.com/plus/v1/people/me/openIdConnect';
+  let params = {
+    code: payload.code,
+    client_id: payload.clientId,
+    redirect_uri: payload.redirectUri,
+    client_secret: process.env.GOOGLE_SECRET,
+    grant_type: 'authorization_code'
+  };
+  Request.post(accessTokenUrl, { json: true, form: params }, (err, response, token) => {
+    let accessToken = token.access_token;
+    let headers = { Authorization: 'Bearer ' + accessToken };
+    Request.get({url:userApiUrl, headers:headers, json:true}, (err, response, profile) => {
+      cb({google:profile.sub, displayName:profile.name, photoUrl: profile.picture});      
+    });
+  });
+};
+
 userSchema.statics.linkedin = function(payload, cb) {
   let accessTokenUrl = 'https://www.linkedin.com/uas/oauth2/accessToken';
   let userApiUrl = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address,picture-url)';
-  console.log('CODE:', payload.code);
   let params = {
     grant_type:'authorization_code',
     code: payload.code,

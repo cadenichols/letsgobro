@@ -9,5 +9,7 @@ module.exports = [
   {method: 'delete', path: '/logout', config: require('../routes/users/logout')},
 
   {method: 'post', path: '/auth/github', config: require('../routes/users/github')},
-  {method: 'post', path: '/auth/linkedin', config: require('../routes/users/linkedin')}
+  {method: 'post', path: '/auth/linkedin', config: require('../routes/users/linkedin')},
+  {method: 'post', path: '/auth/google', config: require('../routes/users/google')},
+  {method: 'post', path: '/auth/facebook', config: require('../routes/users/facebook')}
 ];
