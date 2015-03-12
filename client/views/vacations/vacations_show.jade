@@ -19,10 +19,54 @@ h4 Show Vacation, Bro!
 .row
   .col-md-8.col-md-offset-2
     button.btn.btn-primary.btn-lg(ng-click='submit()') Find Flights, Bro!
-//- .row
-//-   .col-md-10.col-md-offset-1
-//-     .panel.panel-default(ng-repeat='flight in flights')
-//-       .panel-heading
-//-         h4.panel-title {{'$' + (flight.baseFare + flight.taxes) + 'departing' + flight.connections[0][0].DepartureDateTime}}
-//-       .panel-body
-//-         div testytesty
+.row
+  .col-md-10.col-md-offset-1
+    .panel.panel-default(ng-repeat='flight in flights')
+      .panel-heading
+        h4.panel-title
+          span {{'Total: $' + (flight.baseFare + flight.taxes)}}
+      .panel-body
+        .infosection
+          dl
+            dt Base Fare
+            dd {{flight.baseFare}}
+            dt Taxes
+            dd {{flight.taxes}}
+        .infosection
+        h6 Departing Itinerary
+        table.table.table-bordered
+          tr
+            th Airline
+            th Flight No.
+            th Departing
+            th Takeoff
+            th Arriving
+            th Landing
+            th Duration
+          tr(ng-repeat='connection in flight.connections[0]')
+            td {{connection.OperatingAirline.Code}}
+            td {{connection.OperatingAirline.FlightNumber}}
+            td {{connection.DepartureAirport.LocationCode}}
+            td {{connection.DepartureDateTime}}
+            td {{connection.ArrivalAirport.LocationCode}}
+            td {{connection.ArrivalDateTime}}
+            td {{connection.ElapsedTime + ' minutes'}}
+        h6 Returning Itinerary
+        table.table.table-bordered
+          tr
+            th Airline
+            th Flight No.
+            th Departing
+            th Takeoff
+            th Arriving
+            th Landing
+            th Duration
+          tr(ng-repeat='connection in flight.connections[1]')
+            td {{connection.OperatingAirline.Code}}
+            td {{connection.OperatingAirline.FlightNumber}}
+            td {{connection.DepartureAirport.LocationCode}}
+            td {{connection.DepartureDateTime}}
+            td {{connection.ArrivalAirport.LocationCode}}
+            td {{connection.ArrivalDateTime}}
+            td {{connection.ElapsedTime + ' minutes'}}
+

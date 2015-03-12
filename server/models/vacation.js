@@ -56,12 +56,14 @@ vacationSchema.statics.flights = function(o, cb) {
         let taxArray = itinerary.AirItineraryPricingInfo.ItinTotalFare.Taxes.Tax;
         let taxes = _.reduce(_.pluck(taxArray, 'Amount'), (sum, n) => { return sum + n; });
         let connections = _.map(itinerary.AirItinerary.OriginDestinationOptions.OriginDestinationOption, option => {
-          return _.map(option.FlightSegment, segment => {
-            let segmentInfo = _.pick(segment, ['DepartureAirport', 'ArrivalAirport', 'DepartureDateTime', 'ArrivalDateTime', 'OperatingAirline']);
+          let segment = _.map(option.FlightSegment, segment => {
+            let segmentInfo = _.pick(segment, ['DepartureAirport', 'ArrivalAirport', 'DepartureDateTime', 'ArrivalDateTime', 'OperatingAirline', 'ElapsedTime']);
             segmentInfo.DepartureDateTime = moment(segmentInfo.DepartureDateTime).format('lll');
             segmentInfo.ArrivalDateTime = moment(segmentInfo.ArrivalDateTime).format('lll');
+            segmentInfo.ElapsedTimeHumanized = moment.duration(segmentInfo.ElapsedTime, 'minutes').humanize();
             return segmentInfo;
           });
+          return segment;
         });
         return {baseFare:baseFare, taxes:taxes, connections:connections};
       });
