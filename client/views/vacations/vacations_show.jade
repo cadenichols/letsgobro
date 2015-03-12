@@ -1,4 +1,5 @@
 h4 Show Vacation, Bro!
+div(cn-stripe-brain)
 .row
   .col-md-8.col-md-offset-2
     .panel.panel-default
@@ -21,18 +22,19 @@ h4 Show Vacation, Bro!
     button.btn.btn-primary.btn-lg(ng-click='submit()') Find Flights, Bro!
 .row
   .col-md-10.col-md-offset-1
-    .panel.panel-default(ng-repeat='flight in flights')
+    .panel.panel-default(ng-repeat='itinerary in itineraries')
       .panel-heading
         h4.panel-title
-          span {{'Total: $' + (flight.baseFare + flight.taxes)}}
+          span Total: {{(itinerary.baseFare + itinerary.taxes) | currency}}
       .panel-body
         .infosection
           dl
             dt Base Fare
-            dd {{flight.baseFare}}
+            dd {{itinerary.baseFare | currency}}
             dt Taxes
-            dd {{flight.taxes}}
-        .infosection
+            dd {{itinerary.taxes | currency}}
+        .infosection.navbar-right
+          div(cn-stripe itinerary='itinerary' vacation='vacation._id' cost='itinerary.baseFare + itinerary.taxes' description='vacation.title')
         h6 Departing Itinerary
         table.table.table-bordered
           tr
@@ -43,7 +45,7 @@ h4 Show Vacation, Bro!
             th Arriving
             th Landing
             th Duration
-          tr(ng-repeat='connection in flight.connections[0]')
+          tr(ng-repeat='connection in itinerary.connections[0]')
             td {{connection.OperatingAirline.Code}}
             td {{connection.OperatingAirline.FlightNumber}}
             td {{connection.DepartureAirport.LocationCode}}
@@ -61,7 +63,7 @@ h4 Show Vacation, Bro!
             th Arriving
             th Landing
             th Duration
-          tr(ng-repeat='connection in flight.connections[1]')
+          tr(ng-repeat='connection in itinerary.connections[1]')
             td {{connection.OperatingAirline.Code}}
             td {{connection.OperatingAirline.FlightNumber}}
             td {{connection.DepartureAirport.LocationCode}}

@@ -13,8 +13,12 @@ angular.module('angular-prototype')
       return $http.get('/vacations');
     }
     function getFlights(vacationId) {
-      return $http.get('/flights/' + vacationId);
+      return $http.get(`/vacations/${vacationId}/flights`);
+    }
+    function purchaseFlight(vacation, info) {
+      console.log('VACATION:', vacation);
+      return $http.post(`/vacations/${vacation}/flights/purchase`, info);
     }
     
-    return {create:create, show:show, index:index, getFlights:getFlights};
+    return {create:create, show:show, index:index, getFlights:getFlights, purchaseFlight:purchaseFlight};
   }]);

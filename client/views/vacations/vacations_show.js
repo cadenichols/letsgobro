@@ -9,7 +9,7 @@ angular.module('angular-prototype')
     $scope.submit = () => {
       Vacation.getFlights($state.params.vacationId)
       .then(response => {
-        $scope.flights = response.data;
+        $scope.itineraries = response.data;
       });
     };
   }]);

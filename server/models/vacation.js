@@ -6,6 +6,7 @@ let mongoose = require('mongoose');
 let request = require('request');
 let _ = require('lodash');
 let moment = require('moment');
+let stripe = require('stripe')(process.env.STRIPE_SECRET);
 let Vacation;
 
 let vacationSchema = mongoose.Schema({
@@ -15,8 +16,71 @@ let vacationSchema = mongoose.Schema({
   departureAirport: {type: String, required: true},
   arrivalAirport: {type: String, required: true},
   userId: {type: mongoose.Schema.ObjectId, ref: 'User', required: true},
-  createdAt: {type: Date, default: Date.now, required: true}
+  createdAt: {type: Date, default: Date.now, required: true},
+  flight:{
+    charge:{
+      id: String,
+      amount: Number,
+      date: {type: Date, default: Date.now}
+    },
+    itinerary:{
+      outgoingSegments:[{
+        departureAirport: String,
+        arrivalAirport: String,
+        departureDateTime: Date,
+        arrivalDateTime: Date,
+        airlineCode: String,
+        flightNumber: Number,
+        duration: Number
+      }],
+      returningSegments:[{
+        departureAirport: String,
+        arrivalAirport: String,
+        departureDateTime: Date,
+        arrivalDateTime: Date,
+        airlineCode: String,
+        flightNumber: Number,
+        duration: Number
+      }]
+    }
+  }
 });
+
+vacationSchema.methods.setItinerary = function(o) {
+  o[0].forEach((segment) => {
+    this.flight.itinerary.outgoingSegments.push(parseSegment(segment));
+  });
+  o[1].forEach((segment) => {
+    this.flight.itinerary.returningSegments.push(parseSegment(segment));
+  });
+};
+
+function parseSegment(segment) {
+  let segmentObject = {};
+  segmentObject.departureAirport = segment.DepartureAirport.LocationCode;
+  segmentObject.arrivalAirport = segment.ArrivalAirport.LocationCode;
+  segmentObject.departureDateTime = moment(segment.DepartureDateTime, 'MMM DD, YYYY hh:ss A').toDate();
+  segmentObject.arrivalDateTime = moment(segment.ArrivalDateTime, 'MMM DD, YYYY hh:ss A').toDate();
+  segmentObject.airlineCode = segment.OperatingAirline.Code;
+  segmentObject.flightNumber = segment.OperatingAirline.FlightNumber;
+  segmentObject.duration = segment.ElapsedTime;
+  return segmentObject;
+}
+
+vacationSchema.methods.purchase = function(o, cb) {
+  stripe.charges.create({
+    amount: o.cost,
+    currency: 'usd',
+    source: o.token,
+    description: o.description
+  }, (err, charge) => {
+    if(!err) {
+      this.flight.charge.id = charge.id;
+      this.flight.charge.amount = charge.amount / 100;
+    }
+    cb(err, charge);
+  });
+};
 
 vacationSchema.statics.flights = function(o, cb) {
   o.departureDate = moment(o.departureDate).format('YYYY-MM-DD');
