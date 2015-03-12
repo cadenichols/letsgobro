@@ -1,0 +1,28 @@
+h4 Show Vacation, Bro!
+.row
+  .col-md-8.col-md-offset-2
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title {{vacation.title}}
+      .panel-body
+        dl
+          dt Departure Date
+          dd {{vacation.departureDate | date:'short'}}
+          dt Departure Airport
+          dd {{vacation.departureAirport}}
+          hr
+          dt Arrival Date
+          dd {{vacation.arrivalDate | date:'short'}}
+          dt Arrival Airport
+          dd {{vacation.arrivalAirport}}
+        h6 Vacation created at {{vacation.createdAt | date:'short'}}
+.row
+  .col-md-8.col-md-offset-2
+    button.btn.btn-primary.btn-lg(ng-click='submit()') Find Flights, Bro!
+//- .row
+//-   .col-md-10.col-md-offset-1
+//-     .panel.panel-default(ng-repeat='flight in flights')
+//-       .panel-heading
+//-         h4.panel-title {{'$' + (flight.baseFare + flight.taxes) + 'departing' + flight.connections[0][0].DepartureDateTime}}
+//-       .panel-body
+//-         div testytesty

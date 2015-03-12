@@ -1,0 +1,24 @@
+h1 New Vacation, Bro!
+
+.row
+  .col-xs-4
+    form(name='vacationForm', novalidate)
+      .form-group
+        label(for='title') Title
+        input#title.form-control(type='text', name='title', ng-model='vacation.title', ng-minlength='3', required)
+        div(ng-if='vacationForm.title.$touched && vacationForm.title.$invalid', ng-messages='vacationForm.title.$error', ng-messages-include='/views/partials/form_validation_messages.html')
+        label(for='departureDate') Departure Date
+        input#departureDate.form-control(type='date', name='departureDate', ng-model='vacation.departureDate', required)
+        div(ng-if='vacationForm.departureDate.$touched && vacationForm.departureDate.$invalid', ng-messages='vacationForm.departureDate.$error', ng-messages-include='/views/partials/form_validation_messages.html')
+        label(for='arrivalDate') Arrival Date
+        input#arrivalDate.form-control(type='date', name='arrivalDate', ng-model='vacation.arrivalDate', required)
+        div(ng-if='vacationForm.arrivalDate.$touched && vacationForm.arrivalDate.$invalid', ng-messages='vacationForm.arrivalDate.$error', ng-messages-include='/views/partials/form_validation_messages.html')
+        label(for='departureAirport') Departure Airport
+        input#departureAirport.form-control(type='text', name='departureAirport', ng-model='vacation.departureAirport', ng-minlength='3', ng-maxlength='3', required)
+        div(ng-if='vacationForm.departureAirport.$touched && vacationForm.departureAirport.$invalid', ng-messages='vacationForm.departureAirport.$error', ng-messages-include='/views/partials/form_validation_messages.html')
+        label(for='arrivalAirport') Arrival Airport
+        input#arrivalAirport.form-control(type='text', name='arrivalAirport', ng-model='vacation.arrivalAirport', ng-minlength='3', ng-maxlength='3', required)
+        div(ng-if='vacationForm.arrivalAirport.$touched && vacationForm.arrivalAirport.$invalid', ng-messages='vacationForm.arrivalAirport.$error', ng-messages-include='/views/partials/form_validation_messages.html')
+      .form-group
+        button.btn.btn-default(ng-if='vacationForm.$valid', type='submit', ng-click='submit(vacation)') Submit
+  .col-xs-8

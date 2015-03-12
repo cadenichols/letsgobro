@@ -12,5 +12,11 @@ module.exports = [
   {method: 'post', path: '/auth/linkedin', config: require('../routes/users/linkedin')},
   {method: 'post', path: '/auth/google', config: require('../routes/users/google')},
   {method: 'post', path: '/auth/facebook', config: require('../routes/users/facebook')},
-  {method: 'get', path: '/auth/twitter', config: require('../routes/users/twitter')}
+  {method: 'get', path: '/auth/twitter', config: require('../routes/users/twitter')},
+
+  {method: 'post', path: '/vacations', config: require('../routes/vacations/create')},
+  {method: 'get', path: '/vacations/{vacationId}', config: require('../routes/vacations/show')},
+  {method: 'get', path: '/vacations', config: require('../routes/vacations/index')},
+
+  {method: 'get', path: '/flights/{vacationId}', config: require('../routes/vacations/flights')}
 ];

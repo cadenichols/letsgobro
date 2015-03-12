@@ -4,13 +4,13 @@ angular.module('angular-prototype')
   .controller('UsersCtrl', ['$rootScope', '$scope', '$state', '$auth', '$window', function($rootScope, $scope, $state, $auth, $window){
     $scope.name = _.capitalize($state.current.name);
 
-    function login (response) {
-      $rootScope.user = response.data.user;
+    function login(response){
       $window.localStorage.user = JSON.stringify(response.data.user);
+      $rootScope.user = response.data.user;
       $state.go('home');
     }
 
-    $scope.authenticate = function(provider) {
+    $scope.authenticate = function(provider){
       $auth.authenticate(provider)
       .then(login);
     };

@@ -9,6 +9,11 @@ angular.module('angular-prototype', ['ui.router', 'ngMessages', 'satellizer'])
       .state('faq', {url:'/faq', templateUrl:'/views/general/faq.html'})
       .state('contact', {url:'/contact', templateUrl:'/views/general/contact.html'})
 
+      .state('vacations', {url:'/vacations', templateUrl:'views/vacations/vacations.html', abstract:true})
+      .state('vacations.new', {url:'/new', templateUrl:'views/vacations/vacations_new.html', controller:'VacationsNewCtrl'})
+      .state('vacations.show', {url:'/{vacationId}', templateUrl:'views/vacations/vacations_show.html', controller:'VacationsShowCtrl'})
+      .state('vacations.index', {url:'', templateUrl:'views/vacations/vacations_index.html', controller:'VacationsIndexCtrl'})
+
       .state('register', {url:'/register', templateUrl:'/views/users/users.html', controller:'UsersCtrl'})
       .state('login', {url:'/login', templateUrl:'/views/users/users.html', controller:'UsersCtrl'});
 
@@ -19,7 +24,7 @@ angular.module('angular-prototype', ['ui.router', 'ngMessages', 'satellizer'])
     $authProvider.twitter({url: '/auth/twitter'});
   }])
   .run(['$rootScope', '$window', '$auth', function($rootScope, $window, $auth){
-    if($auth.isAuthenticated()) {
+    if($auth.isAuthenticated()){
       $rootScope.user = JSON.parse($window.localStorage.user);
     }
   }]);

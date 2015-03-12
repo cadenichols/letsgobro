@@ -25,5 +25,5 @@
   "browser": true,
   "jquery": true,
 
-  "globals": {"angular":true, "_":true}
+  "globals": {"angular":true, "_":true, "moment":true}
 }
