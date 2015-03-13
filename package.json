@@ -28,7 +28,7 @@
     "clean": "rm -rf node_modules && rm -rf public && npm install && bower install && gulp build",
     "preinstall": "rm -rf node_modules public",
     "postinstall": "bower install && gulp build",
-    "test": "MONGO_URL=mongodb://localhost/letsgobro-test lab -l -v -m 5000 test/unit"
+    "test": "MONGO_URL=mongodb://localhost/letsgobro-test lab -l -v -m 5000 test/unit test/acceptance"
   },
   "license": "MIT",
   "dependencies": {

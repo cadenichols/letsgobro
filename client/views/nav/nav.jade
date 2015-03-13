@@ -14,8 +14,10 @@ nav.navbar.navbar-default(ng-controller='NavCtrl')
       ul.nav.navbar-nav.navbar-right(ng-show='user')
         li: a(ui-sref='vacations.new'): i.fa.fa-paper-plane &nbsp; New Vacation
         li: a(ui-sref='vacations.index'): i.fa.fa-globe &nbsp; My Vacations
+        //- li: a(ui-sref=''
         li: a(href='#', ng-click='logout()') {{user.displayName || user.email}}
       ul.nav.navbar-nav.navbar-right
         li: a(ui-sref='home'): i.fa.fa-home &nbsp; Home
         li: a(ui-sref='faq'): i.fa.fa-info &nbsp; Faq
         li: a(ui-sref='contact'): i.fa.fa-at &nbsp; Contact
+

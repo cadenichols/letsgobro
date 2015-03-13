@@ -21,7 +21,7 @@ let vacationSchema = mongoose.Schema({
     charge:{
       id: String,
       amount: Number,
-      date: {type: Date, default: Date.now}
+      date: Date
     },
     itinerary:{
       outgoingSegments:[{
@@ -75,8 +75,10 @@ vacationSchema.methods.purchase = function(o, cb) {
     description: o.description
   }, (err, charge) => {
     if(!err) {
+      console.log('model vacation charge:', charge);
       this.flight.charge.id = charge.id;
       this.flight.charge.amount = charge.amount / 100;
+      this.flight.charge.date = new Date();
     }
     cb(err, charge);
   });

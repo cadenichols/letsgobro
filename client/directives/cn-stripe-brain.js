@@ -9,14 +9,17 @@ angular.module('angular-prototype')
   o.restrict = 'A';
   o.templateUrl = '/directives/cn-stripe-brain.html';
   o.scope = {};
-  o.controller = ['$scope', 'Vacation', ($scope, Vacation) => {
+  o.controller = ['$scope', '$rootScope', 'Vacation', ($scope, $rootScope, Vacation) => {
     let data;
     let handler = StripeCheckout.configure({
       key: 'pk_test_Juj6ciDALdGVzEBrCt1V05Rq',
       image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
       token: function(token) {
         data.token = token.id;
-        Vacation.purchaseFlight(data.vacation, data);
+        Vacation.purchaseFlight(data.vacation, data)
+        .then(response => {
+          $rootScope.$broadcast('flight-purchased', response.data);
+        });
       }
     });
     $scope.$on('purchase', (event, info) => {

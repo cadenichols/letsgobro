@@ -1,23 +1,70 @@
-h4 Show Vacation, Bro!
 div(cn-stripe-brain)
 .row
-  .col-md-8.col-md-offset-2
+  .col-md-6.col-md-offset-3
+    h4 Your Vacation, Bro!
     .panel.panel-default
       .panel-heading
         h4.panel-title {{vacation.title}}
       .panel-body
-        dl
+        dl.infosection
           dt Departure Date
           dd {{vacation.departureDate | date:'short'}}
           dt Departure Airport
           dd {{vacation.departureAirport}}
-          hr
+        dl.infosection
           dt Arrival Date
           dd {{vacation.arrivalDate | date:'short'}}
           dt Arrival Airport
           dd {{vacation.arrivalAirport}}
         h6 Vacation created at {{vacation.createdAt | date:'short'}}
-.row
+    .panel.panel-default(ng-if='vacation.flight.charge.id')
+      .panel-heading
+        h4.panel-title Your Itinerary, Bro!
+      .panel-body
+        dl.infosection
+          dt Charge Amount:
+          dd {{vacation.flight.charge.amount | currency}}
+          dt Purchased:
+          dd {{vacation.flight.charge.date | date}}
+          dt Charge Id:
+          dd {{vacation.flight.charge.id}}
+        h6 Departing Itinerary
+        table.table.table-bordered
+          tr
+            th Airline
+            th Flight No.
+            th Departing
+            th Takeoff
+            th Arriving
+            th Landing
+            th Duration
+          tr(ng-repeat='segment in vacation.flight.itinerary.outgoingSegments')
+            td {{segment.airlineCode}}
+            td {{segment.flightNumber}}
+            td {{segment.departureAirport}}
+            td {{segment.departureDateTime | date:'short'}}
+            td {{segment.arrivalAirport}}
+            td {{segment.arrivalDateTime | date:'short'}}
+            td {{segment.duration + ' minutes'}}
+        h6 Returning Itinerary
+        table.table.table-bordered
+          tr
+            th Airline
+            th Flight No.
+            th Departing
+            th Takeoff
+            th Arriving
+            th Landing
+            th Duration
+          tr(ng-repeat='segment in vacation.flight.itinerary.returningSegments')
+            td {{segment.airlineCode}}
+            td {{segment.flightNumber}}
+            td {{segment.departureAirport}}
+            td {{segment.departureDateTime | date:'short'}}
+            td {{segment.arrivalAirport}}
+            td {{segment.arrivalDateTime | date:'short'}}
+            td {{segment.duration + 'minutes'}}
+.row(ng-if='!vacation.flight.charge.id')
   .col-md-8.col-md-offset-2
     button.btn.btn-primary.btn-lg(ng-click='submit()') Find Flights, Bro!
 .row
@@ -71,4 +118,3 @@ div(cn-stripe-brain)
             td {{connection.ArrivalAirport.LocationCode}}
             td {{connection.ArrivalDateTime}}
             td {{connection.ElapsedTime + ' minutes'}}
-

@@ -19,7 +19,6 @@ angular.module('angular-prototype')
         description: $scope.description,
         itinerary: $scope.itinerary
       };
-      console.log('STRIPE INFO:', info);
       $rootScope.$broadcast('purchase', info);
     };
   }];

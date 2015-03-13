@@ -16,7 +16,6 @@ angular.module('angular-prototype')
       return $http.get(`/vacations/${vacationId}/flights`);
     }
     function purchaseFlight(vacation, info) {
-      console.log('VACATION:', vacation);
       return $http.post(`/vacations/${vacation}/flights/purchase`, info);
     }
     

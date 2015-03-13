@@ -16,6 +16,7 @@ angular.module('angular-prototype', ['ui.router', 'ngMessages', 'satellizer'])
 
       .state('register', {url:'/register', templateUrl:'/views/users/users.html', controller:'UsersCtrl'})
       .state('login', {url:'/login', templateUrl:'/views/users/users.html', controller:'UsersCtrl'});
+      
 
     $authProvider.github({clientId:'50289e41bad5edb68f66'});
     $authProvider.linkedin({clientId:'751i7hx0a5gd8m'});
